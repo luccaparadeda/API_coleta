@@ -1,0 +1,17 @@
+services:
+  api:
+    build: ./api
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 5s
+      timeout: 7s
+      retries: 5
+      start_period: 5s
+
+  consumer:
+    build: ./consumer
+    depends_on:
+      api:
+        condition: service_healthy
